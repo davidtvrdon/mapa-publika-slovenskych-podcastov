@@ -128,6 +128,11 @@
   #tip .tl{color:#C9C4B8;font-size:10.5px;margin-top:3px}
   footer{margin-top:26px;font-size:11.5px;color:var(--muted);line-height:1.6;border-top:1px solid var(--line);padding-top:14px;max-width:900px}
   footer b{color:var(--ink)}
+  .source-note{margin-bottom:10px;font-size:12px;color:var(--ink)}
+  .source-note a{color:var(--accent);text-decoration:none}
+  .source-note a:hover{text-decoration:underline}
+  .copylink{margin-top:14px;display:inline-block;padding:7px 14px;background:none;border:1.5px solid var(--line);border-radius:8px;font-size:12px;font-family:inherit;color:var(--muted);cursor:pointer;transition:.14s}
+  .copylink:hover{border-color:var(--accent);color:var(--accent)}
   @media(max-width:920px){.grid{grid-template-columns:1fr}.stat{display:none}}
 </style>
 </head>
@@ -165,6 +170,7 @@
 
   </main>
   <footer>
+    <div class="source-note">Dátový zdroj: <a href="https://www.iabslovakia.sk/aprilove-vysledky-pocuvanosti-podcastov-na-slovensku-2/" target="_blank" rel="noopener noreferrer">IAB Slovakia: Monitoring počúvanosti podcastov (04/2026)</a></div>
     <b>Metodika.</b> Klastre boli nájdené automaticky (k-means) na základe podielu žien a podielu publika do 35 rokov; optimálny počet (6) bol zvolený podľa silhouette skóre. Os X = podiel žien spomedzi mužov a žien, os Y = podiel poslucháčov do 35 rokov. Priemerný vek je odhad z midpointov vekových pásiem. <b>Veľkosť bodu</b> zodpovedá celkovému počtu prehratí (audio + video + vlastný hosting), škálovaná podľa plochy (odmocninou). Počty prehratí sa podarilo priradiť k 99 zo 107 podcastov; 8 podcastov bez zhody v dátach o prehratiach je vykreslených prerušovaným okrajom (prehratia neznáme). Najpočúvanejší podcast celkovo (Ťažký týždeň, 1,7 mil.) nemá demografické dáta, preto nie je na mape; najväčší zobrazený bod je Dobré ráno. <b>Pozor:</b> demografia popisuje zloženie publika, nie jeho veľkosť; prehratia dopĺňajú rozmer dosahu. Podcasty bez demografie (Ťažký týždeň, Veľké správy, EKG &amp; Milan Lieskovský) boli vynechané; body s malou alebo neúplnou vzorkou nesú značku ◌.
   </footer>
 </div>
@@ -346,7 +352,7 @@ function overview(){
   h+='</div>';D.innerHTML=h;
 }
 window.showCluster=function(id){
-  state.view='cluster';state.sel=null;
+  state.view='cluster';state.sel=null;updateHash('c-'+id);
   state.active=new Set([id]);
   const c=C[id];
   const mem=P.map((p,i)=>({p,i})).filter(o=>o.p.cluster===id).sort((a,b)=>(b.p.plays||-1)-(a.p.plays||-1));
@@ -362,7 +368,7 @@ window.showCluster=function(id){
   h+='</div>';
   D.innerHTML=h;drawDots();drawLegend();syncTarget(id);
 }
-window.goOverview=function(){state.active=new Set([0,1,2,3,4,5]);document.getElementById('target').value='all';overview();render();}
+window.goOverview=function(){state.active=new Set([0,1,2,3,4,5]);document.getElementById('target').value='all';updateHash('');overview();render();}
 window.selectPodcast=function(i){
   state.view='podcast';state.sel=i;
   const p=P[i],c=C[p.cluster];
@@ -376,6 +382,10 @@ window.selectPodcast=function(i){
   h+=`<div class="cmp">Sivé pásmo nižšie = porovnanie so segmentom. Segment ${esc(c.name)}: ${c.wf}% žien, ⌀ ${c.meanage} r.</div>`;
   if(p.small)h+=`<div class="smallnote">◌ Malá alebo neúplná vzorka. Tieto čísla berte orientačne.</div>`;
   h+=trendChart(p.name, cssC(p.cluster));
+  // add copy link button
+  const shareUrl=new URL(window.location.href);shareUrl.hash='p-'+i;
+  h+=`<button type="button" class="copylink" onclick="navigator.clipboard.writeText('${shareUrl.toString()}').then(()=>{this.textContent='✓ Odkaz skopírovaný';setTimeout(()=>{this.textContent='Skopírovať odkaz'},2000)})">Skopírovať odkaz</button>`;
+  updateHash('p-'+i);
   D.innerHTML=h;
   if(!state.active.has(p.cluster))state.active.add(p.cluster);
   drawDots();
@@ -455,8 +465,23 @@ function drawSizeLegend(){
   sl.innerHTML=`<span>Veľkosť&nbsp;bodu&nbsp;=&nbsp;prehratia</span><div class="bubs"><svg width="${cx.toFixed(0)}" height="${H+16}">${inner}</svg></div><span style="border:1px dashed var(--muted);border-radius:50%;width:11px;height:11px;display:inline-block"></span><span>prerušovaný = neznáme prehratia</span>`;
 }
 
+/* URL hash routing */
+function updateHash(hash){
+  const url=new URL(window.location.href);
+  if(hash){url.hash=hash;}else{url.hash='';}
+  window.history.replaceState(null,'',url.toString());
+}
+function readHash(){
+  const h=window.location.hash.replace('#','');
+  if(!h)return;
+  const pm=h.match(/^p-(\d+)$/);
+  const cm=h.match(/^c-(\d+)$/);
+  if(pm){const i=+pm[1];if(i>=0&&i<P.length){showCluster(P[i].cluster);selectPodcast(i);}}
+  else if(cm){const id=+cm[1];if(id>=0&&id<C.length)showCluster(id);}
+}
+
 /* init */
-drawAxes();buildControls();drawDots();drawLegend();drawSizeLegend();overview();
+drawAxes();buildControls();drawDots();drawLegend();drawSizeLegend();overview();readHash();
 </script>
 </body>
 </html>
