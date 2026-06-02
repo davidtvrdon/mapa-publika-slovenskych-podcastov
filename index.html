@@ -116,12 +116,15 @@
   .trend-svg{width:100%;display:block;overflow:visible}
   .trend-bar-audio{fill:var(--clr-audio,#4A90D9);opacity:.85}
   .trend-bar-yt{fill:#FF4545;opacity:.8}
-  .trend-xlabel{font-family:"DM Sans",sans-serif;font-size:8.5px;fill:var(--muted);text-anchor:middle}
+  .trend-xlabel{font-family:"DM Sans",sans-serif;font-size:8px;fill:var(--muted);text-anchor:end}
   .trend-ylabel{font-family:"DM Sans",sans-serif;font-size:8px;fill:var(--muted);text-anchor:end}
   .trend-gridline{stroke:var(--line2);stroke-width:.8}
   .trend-leg{display:flex;gap:12px;margin-top:5px;font-size:11px;color:var(--muted)}
   .trend-leg span{display:flex;align-items:center;gap:4px}
   .trend-leg i{display:inline-block;width:9px;height:9px;border-radius:2px}
+  .trend-col-tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--paper2);padding:6px 9px;border-radius:8px;font-size:11px;line-height:1.5;white-space:nowrap;opacity:0;transition:opacity .1s;z-index:60;box-shadow:0 4px 14px rgba(0,0,0,.22)}
+  .trend-col-tip b{font-family:"Bricolage Grotesque";font-weight:700;display:block;margin-bottom:2px}
+  .trend-wrap{position:relative}
   /* tooltip */
   #tip{position:fixed;pointer-events:none;z-index:50;background:var(--ink);color:var(--paper2);padding:8px 11px;border-radius:9px;font-size:12px;max-width:230px;opacity:0;transition:opacity .12s;box-shadow:0 8px 24px rgba(0,0,0,.25)}
   #tip b{font-family:"Bricolage Grotesque";font-weight:700}
@@ -385,42 +388,57 @@ function trendChart(podcastName, clusterColor){
   const td = TREND[podcastName];
   if(!td) return '<div class="sech">Trend prehratí</div><div class="cmp" style="margin-top:4px">Dáta o trende nie sú k dispozícii.</div>';
   const audio = td.a, yt = td.y;
-  const W=290, H=90, PL=34, PR=8, PT=8, PB=22;
+  const W=290, H=100, PL=34, PR=8, PT=8, PB=32;
   const cw = (W-PL-PR), ch = H-PT-PB;
   const n = MONTHS.length;
   const bw = cw/n, gap = bw*0.18, bw2 = bw - gap*2;
-  // compute stacked totals
   const totals = audio.map((a,i)=>(a||0)+(yt[i]||0));
   const maxT = Math.max(...totals, 1);
-  // nice y-axis: pick 3 ticks
   function niceTick(v){const e=Math.pow(10,Math.floor(Math.log10(v)));const f=v/e;return (f<=2?2:f<=5?5:10)*e;}
   const tickMax = niceTick(maxT);
   const ticks = [0, tickMax/2, tickMax];
-  function fmtK(v){return v>=1000000?(v/1000000).toFixed(v%1000000===0?0:1)+'M':v>=1000?Math.round(v/1000)+'k':v;}
+  function fmtK(v){return v>=1000000?(v/1000000).toFixed(1)+'M':v>=1000?Math.round(v/1000)+'k':String(v);}
+  function fmtFull(v){return v>=1000000?(v/1000000).toFixed(2).replace(/\.?0+$/,'')+'M':v>=1000?(v/1000).toFixed(1).replace(/\.0$/,'')+'k':String(v);}
+  const tid = 'tt'+Math.random().toString(36).slice(2,7);
   let svg = `<svg class="trend-svg" viewBox="0 0 ${W} ${H}" style="--clr-audio:${clusterColor}">`;
-  // grid lines
   ticks.forEach(t=>{
     const y = PT + ch - (t/tickMax)*ch;
     svg+=`<line class="trend-gridline" x1="${PL}" y1="${y.toFixed(1)}" x2="${W-PR}" y2="${y.toFixed(1)}"/>`;
     svg+=`<text class="trend-ylabel" x="${PL-3}" y="${(y+2.5).toFixed(1)}">${fmtK(t)}</text>`;
   });
-  // bars
+  const baseY = PT + ch;
   MONTHS.forEach((m,i)=>{
     const x = PL + i*bw + gap;
     const a = audio[i]||0, y = yt[i]||0, tot = a+y;
-    if(tot===0) return;
-    const totalH = (tot/tickMax)*ch;
     const audioH = (a/tickMax)*ch;
     const ytH = (y/tickMax)*ch;
-    const baseY = PT + ch; // bottom of chart area
-    if(audioH>0){svg+=`<rect class="trend-bar-audio" x="${x.toFixed(1)}" y="${(baseY-audioH).toFixed(1)}" width="${bw2.toFixed(1)}" height="${audioH.toFixed(1)}"/>`;}
-    if(ytH>0){svg+=`<rect class="trend-bar-yt" x="${x.toFixed(1)}" y="${(baseY-audioH-ytH).toFixed(1)}" width="${bw2.toFixed(1)}" height="${ytH.toFixed(1)}"/>`;}
-    svg+=`<text class="trend-xlabel" x="${(x+bw2/2).toFixed(1)}" y="${(H-PB+11).toFixed(1)}">${m}</text>`;
+    if(audioH>0) svg+=`<rect class="trend-bar-audio" x="${x.toFixed(1)}" y="${(baseY-audioH).toFixed(1)}" width="${bw2.toFixed(1)}" height="${audioH.toFixed(1)}"/>`;
+    if(ytH>0)    svg+=`<rect class="trend-bar-yt"    x="${x.toFixed(1)}" y="${(baseY-audioH-ytH).toFixed(1)}" width="${bw2.toFixed(1)}" height="${ytH.toFixed(1)}"/>`;
+    // rotated label
+    const lx = (x+bw2/2).toFixed(1), ly = (baseY+4).toFixed(1);
+    svg+=`<text class="trend-xlabel" x="${lx}" y="${ly}" transform="rotate(-40 ${lx} ${ly})">${m}</text>`;
+    // invisible hover target + data attrs
+    const tipAudio = a>0?`Audio: ${fmtFull(a)}`:'';
+    const tipYt = y>0?`YouTube: ${fmtFull(y)}`:'';
+    const tipTot = tot>0?`Spolu: ${fmtFull(tot)}`:'';
+    svg+=`<rect x="${x.toFixed(1)}" y="${PT}" width="${bw2.toFixed(1)}" height="${ch+4}" fill="transparent" style="cursor:default"
+      onmouseenter="showTrendTip(event,'${tid}','${m}','${tipAudio}','${tipYt}','${tipTot}')"
+      onmouseleave="hideTrendTip('${tid}')"/>`;
   });
   svg+='</svg>';
   const hasYt = yt.some(v=>v>0);
-  return `<div class="sech">Trend prehratí · máj 2025 – apr 2026</div><div class="trend-wrap">${svg}<div class="trend-leg"><span><i style="background:${clusterColor};opacity:.85"></i>Audio</span>${hasYt?'<span><i style="background:#FF4545;opacity:.8"></i>YouTube</span>':''}</div></div>`;
+  return `<div class="sech">Trend prehratí · máj 2025 – apr 2026</div><div class="trend-wrap">${svg}<div id="${tid}" class="trend-col-tip"></div><div class="trend-leg"><span><i style="background:${clusterColor};opacity:.85"></i>Audio</span>${hasYt?'<span><i style="background:#FF4545;opacity:.8"></i>YouTube</span>':''}</div></div>`;
 }
+window.showTrendTip=function(ev,tid,month,audio,yt,tot){
+  const el=document.getElementById(tid); if(!el) return;
+  el.innerHTML=`<b>${month}</b>${audio?'<span>'+audio+'</span>':''}${yt?'<span>'+yt+'</span>':''}${tot?'<span style="border-top:1px solid rgba(255,255,255,.2);margin-top:3px;padding-top:3px;display:block">'+tot+'</span>':''}`;
+  const wrap=el.closest('.trend-wrap');
+  const wr=wrap.getBoundingClientRect(), er=ev.target.getBoundingClientRect();
+  el.style.opacity=1;
+  el.style.left=(er.left-wr.left+er.width/2-el.offsetWidth/2)+'px';
+  el.style.top=(er.top-wr.top-el.offsetHeight-6)+'px';
+};
+window.hideTrendTip=function(tid){const el=document.getElementById(tid);if(el)el.style.opacity=0;};
 
 /* ---------- target selector ---------- */
 function syncTarget(id){document.getElementById('target').value=(id==null?'all':id);}
