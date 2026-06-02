@@ -10,7 +10,7 @@
   :root{
     --paper:#F4F1E9; --paper2:#FBF9F3; --ink:#17160F; --muted:#6E6A60;
     --line:rgba(23,22,15,.12); --line2:rgba(23,22,15,.06);
-    --card:#FFFFFF; --accent:#D7392B; --shadow:0 1px 2px rgba(23,22,15,.05),0 8px 28px -12px rgba(23,22,15,.18);
+    --card:#FFFFFF; --accent:#C4311F; --shadow:0 1px 2px rgba(23,22,15,.05),0 8px 28px -12px rgba(23,22,15,.18);
     --c0:#1971C2; --c1:#E64980; --c2:#0CA678; --c3:#7048E8; --c4:#F59F00; --c5:#495057;
   }
   *{box-sizing:border-box}
@@ -19,7 +19,7 @@
     background:var(--paper); color:var(--ink);
     font-family:"DM Sans",sans-serif; font-size:14px; line-height:1.5;
     -webkit-font-smoothing:antialiased;
-    background-image:radial-gradient(circle at 18% -10%,rgba(215,57,43,.05),transparent 42%),radial-gradient(circle at 92% 6%,rgba(25,113,194,.05),transparent 38%);
+    background-image:radial-gradient(circle at 18% -10%,rgba(196,49,31,.05),transparent 42%),radial-gradient(circle at 92% 6%,rgba(25,113,194,.05),transparent 38%);
     background-attachment:fixed;
   }
   .wrap{max-width:1340px;margin:0 auto;padding:26px 26px 60px}
@@ -38,7 +38,9 @@
   input[type=text],select{font-family:"DM Sans",sans-serif;font-size:13.5px;color:var(--ink);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:9px 12px;outline:none;transition:border-color .15s,box-shadow .15s}
   input[type=text]{min-width:210px}
   select{min-width:200px;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%236E6A60' stroke-width='1.6' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:30px}
-  input:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(215,57,43,.12)}
+  input:focus-visible,select:focus-visible{border-color:var(--accent);box-shadow:0 0 0 3px rgba(196,49,31,.2)}
+  :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  input:focus-visible,select:focus-visible{outline:none}
   .btn{font-family:"DM Sans",sans-serif;font-size:13px;font-weight:600;background:var(--ink);color:var(--paper2);border:none;border-radius:10px;padding:10px 15px;cursor:pointer;align-self:flex-end;transition:transform .1s,opacity .15s}
   .btn:hover{opacity:.86}.btn:active{transform:translateY(1px)}
   .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
@@ -55,7 +57,8 @@
   .quad{font-family:"Bricolage Grotesque",sans-serif;font-size:12px;font-weight:600;fill:var(--ink);opacity:.22;text-transform:uppercase;letter-spacing:.04em}
   .tick{font-size:9.5px;fill:var(--muted);font-family:"DM Sans"}
   .dot{cursor:pointer;transition:opacity .18s}
-  .dot:hover{stroke:#17160F !important;stroke-width:2.4 !important}
+  .dot:hover,.dot:focus-visible{stroke:#17160F !important;stroke-width:2.4 !important;outline:none}
+  .dot:focus-visible{stroke-width:3 !important}
   .biglabel{font-family:"Bricolage Grotesque",sans-serif;font-size:11px;font-weight:700;fill:var(--ink);paint-order:stroke;stroke:var(--paper2);stroke-width:3px;stroke-linejoin:round;pointer-events:none}
   .lblline{stroke:var(--muted);stroke-width:.8;opacity:.5}
   /* size legend */
@@ -68,7 +71,8 @@
   .reach small{font-family:"DM Sans";font-weight:600;font-size:11px;color:var(--muted);letter-spacing:.04em}
   /* legend */
   .legend{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px 16px}
-  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;padding:6px 11px 6px 8px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper2);cursor:pointer;user-select:none;transition:.15s;color:var(--ink)}
+  .chip{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;padding:6px 11px 6px 8px;border-radius:999px;border:1.5px solid var(--line);background:var(--paper2);cursor:pointer;user-select:none;transition:.15s;color:var(--ink);font-family:inherit}
+  button.chip{appearance:none}
   .chip .sw{width:11px;height:11px;border-radius:50%}
   .chip .ct{color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
   .chip.off{opacity:.38;filter:grayscale(.6)}
@@ -79,7 +83,8 @@
   .ov-h{font-family:"Bricolage Grotesque",sans-serif;font-size:17px;font-weight:700;margin:0 0 3px}
   .ov-s{color:var(--muted);font-size:12.5px;margin-bottom:16px}
   .clist{display:flex;flex-direction:column;gap:9px}
-  .ccard{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;background:var(--paper2);transition:.14s}
+  .ccard{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;background:var(--paper2);transition:.14s;font-family:inherit;font-size:inherit;text-align:left;width:100%}
+  button.ccard{appearance:none}
   .ccard:hover{border-color:var(--ink);transform:translateX(2px)}
   .ccard .bar{width:7px;height:34px;border-radius:4px;flex:none}
   .ccard .nm{font-weight:700;font-size:13.5px;line-height:1.15}
@@ -102,7 +107,8 @@
   .smallnote{font-size:11.5px;color:#9A5B00;background:rgba(245,159,0,.12);border:1px solid rgba(245,159,0,.35);border-radius:9px;padding:8px 10px;margin-top:12px}
   .podmeta{color:var(--muted);font-size:12.5px;margin-bottom:11px}
   .scrolllist{max-height:240px;overflow:auto;margin-top:6px;border-top:1px solid var(--line2);padding-top:4px}
-  .pli{display:flex;justify-content:space-between;gap:8px;padding:6px 4px;border-bottom:1px solid var(--line2);cursor:pointer;font-size:12.5px}
+  .pli{display:flex;justify-content:space-between;gap:8px;padding:6px 4px;border-bottom:1px solid var(--line2);cursor:pointer;font-size:12.5px;font-family:inherit;background:none;width:100%;text-align:left}
+  button.pli{appearance:none;border-top:none;border-left:none;border-right:none}
   .pli:hover{background:var(--paper2)}
   .pli .pn{font-weight:600}.pli .pp{color:var(--muted);font-size:11px}
   /* tooltip */
@@ -126,9 +132,9 @@
   </header>
 
   <div class="toolbar">
-    <div class="field"><label>Hľadať podcast</label><input type="text" id="search" placeholder="napr. Newsfilter, Vizita…" autocomplete="off"></div>
-    <div class="field"><label>Vydavateľ</label><select id="pub"></select></div>
-    <div class="field"><label>Chcem osloviť</label><select id="target"></select></div>
+    <div class="field"><label for="search">Hľadať podcast</label><input type="text" id="search" placeholder="napr. Newsfilter, Vizita…" autocomplete="off"></div>
+    <div class="field"><label for="pub">Vydavateľ</label><select id="pub"></select></div>
+    <div class="field"><label for="target">Chcem osloviť</label><select id="target"></select></div>
     <button class="btn ghost" id="reset" type="button">Vynulovať</button>
   </div>
 
@@ -136,13 +142,13 @@
     <div class="panel map-wrap">
       <div class="map-title">
         <h2>Mapa segmentov</h2>
-        <span class="hint">Kliknite na bod pre detail · na farebný štítok pre segment</span>
+        <span class="hint">Kliknite alebo stlačte Enter pre detail · na farebný štítok pre segment</span>
       </div>
       <svg class="scatter" id="svg" viewBox="0 0 720 560" role="img" aria-label="Bodový graf publika"></svg>
       <div class="sizeleg" id="sizeleg"></div>
       <div class="legend" id="legend"></div>
     </div>
-    <div class="panel"><div class="detail" id="detail"></div></div>
+    <div class="panel"><div class="detail" id="detail" aria-live="polite" aria-atomic="false"></div></div>
   </div>
 
   <footer>
@@ -184,7 +190,7 @@ function drawAxes(){
   svg.appendChild(el('line',{x1:px(0),y1:py(50),x2:px(100),y2:py(50),stroke:'var(--line)','stroke-width':1,'stroke-dasharray':'4 5'}));
   // quadrant labels
   const q=[['mladí muži',px(7),py(95)],['mladé ženy',px(93),py(95)],['starší muži',px(7),py(6)],['staršie ženy',px(93),py(6)]];
-  q.forEach(([t,x,y],i)=>{const e=el('text',{x,y,class:'quad','text-anchor':i%2?'end':'start'});e.textContent=t;svg.appendChild(e);});
+  q.forEach(([t,x,y],i)=>{const e=el('text',{x,y,class:'quad','text-anchor':i%2?'end':'start','aria-hidden':'true'});e.textContent=t;svg.appendChild(e);});
   // axis titles + ends
   const xt=el('text',{x:(px(0)+px(100))/2,y:VB.h-8,'text-anchor':'middle',class:'axlabel'});xt.textContent='Podiel žien v publiku';svg.appendChild(xt);
   const xl=el('text',{x:px(0),y:py(0)+34,'text-anchor':'start',class:'axend'});xl.textContent='◀ muži';svg.appendChild(xl);
@@ -213,9 +219,13 @@ function drawDots(){
       'stroke-dasharray': known?'':'3 2.5',
       opacity: on ? (match?1:0.12) : 0.1,
       'pointer-events': on?'auto':'none'});
+    c.setAttribute('role','button');
+    c.setAttribute('tabindex', on ? '0' : '-1');
+    c.setAttribute('aria-label',`${p.name} – ${p.pub} – ${fmt(p.plays)} prehratí, ${Math.round(p.wf)}% žien, priemerný vek ${Math.round(p.meanage)} r.`);
     c.addEventListener('mousemove',ev=>showTip(ev,p));
     c.addEventListener('mouseleave',hideTip);
     c.addEventListener('click',()=>selectPodcast(i));
+    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectPodcast(i);}});
     svg.appendChild(c);
   });
   drawLabels(term);
@@ -274,9 +284,11 @@ function hideTip(){tip.style.opacity=0;}
 function drawLegend(){
   const L=document.getElementById('legend');L.innerHTML='';
   C.forEach(c=>{
-    const chip=document.createElement('div');
+    const chip=document.createElement('button');
+    chip.type='button';
     chip.className='chip'+(state.active.has(c.id)?'':' off');
-    chip.innerHTML=`<span class="sw" style="background:${cssC(c.id)}"></span>${esc(c.name)} <span class="ct">${c.n}</span>`;
+    chip.setAttribute('aria-pressed', String(state.active.has(c.id) && state.active.size < 6));
+    chip.innerHTML=`<span class="sw" aria-hidden="true" style="background:${cssC(c.id)}"></span>${esc(c.name)} <span class="ct" aria-label="${c.n} podcastov">${c.n}</span>`;
     chip.addEventListener('click',()=>{
       if(state.active.has(c.id)&&state.active.size===6){state.active=new Set([c.id]);}
       else if(state.active.has(c.id)){state.active.delete(c.id);if(!state.active.size)state.active=new Set([0,1,2,3,4,5]);}
@@ -296,7 +308,7 @@ function genderBar(w,m,na,nb){
   const segs=[[w,'var(--c1)','Ž'],[m,'var(--c0)','M'],[na,'#B7B2A6',''],[nb,'#8C8678','']];
   let h='<div class="gbar">';
   segs.forEach(([v,col,l])=>{if(v>0)h+=`<div class="gseg" style="background:${col};width:${v/tot*100}%">${v/tot*100>9?(l?l+' ':'')+Math.round(v)+'%':''}</div>`;});
-  h+='</div><div class="gleg"><span><i style="background:var(--c1)"></i>Ženy</span><span><i style="background:var(--c0)"></i>Muži</span><span><i style="background:#B7B2A6"></i>Neuvedené</span><span><i style="background:#8C8678"></i>Nebinárne</span></div>';
+  h+='</div><div class="gleg"><span><i aria-hidden="true" style="background:var(--c1)"></i>Ženy</span><span><i aria-hidden="true" style="background:var(--c0)"></i>Muži</span><span><i aria-hidden="true" style="background:#B7B2A6"></i>Neuvedené</span><span><i aria-hidden="true" style="background:#8C8678"></i>Nebinárne</span></div>';
   return h;
 }
 function ageBars(age,color,ref){
@@ -312,9 +324,9 @@ function overview(){
   state.view='overview';state.sel=null;
   let h='<div class="ov-h">6 typov publika</div><div class="ov-s">Automaticky nájdené segmenty podľa zloženia poslucháčov, zoradené podľa celkového dosahu. Kliknite pre detail a zoznam podcastov.</div><div class="clist">';
   C.slice().sort((a,b)=>b.plays_total-a.plays_total).forEach(c=>{
-    h+=`<div class="ccard" onclick="showCluster(${c.id})"><div class="bar" style="background:${cssC(c.id)}"></div>
+    h+=`<button type="button" class="ccard" onclick="showCluster(${c.id})"><div class="bar" aria-hidden="true" style="background:${cssC(c.id)}"></div>
       <div><div class="nm">${esc(c.name)}</div><div class="ds">${c.n} podcastov · ${c.wf}% žien · ⌀ ${c.meanage} r.</div></div>
-      <div class="mt"><b>${fmt(c.plays_total).replace(/ /g,' ')}</b><br>prehratí</div></div>`;
+      <div class="mt"><b>${fmt(c.plays_total).replace(/ /g,' ')}</b><br>prehratí</div></button>`;
   });
   h+='</div>';D.innerHTML=h;
 }
@@ -331,7 +343,7 @@ window.showCluster=function(id){
   h+=`<div class="sech">Priemerné pohlavie segmentu</div>`+genderBar(c.w,c.m);
   h+=`<div class="sech">Priemerné vekové zloženie</div>`+ageBars(c.age,cssC(id));
   h+=`<div class="sech">Podcasty v segmente · podľa prehratí</div><div class="scrolllist">`;
-  mem.forEach(o=>{h+=`<div class="pli" onclick="selectPodcast(${o.i})"><span class="pn">${esc(o.p.name)}${o.p.small?' ◌':''}</span><span class="pp">${fmt(o.p.plays)}${o.p.plays!=null?' prehratí':''}</span></div>`;});
+  mem.forEach(o=>{h+=`<button type="button" class="pli" onclick="selectPodcast(${o.i})"><span class="pn">${esc(o.p.name)}${o.p.small?' ◌':''}</span><span class="pp">${fmt(o.p.plays)}${o.p.plays!=null?' prehratí':''}</span></button>`;});
   h+='</div>';
   D.innerHTML=h;drawDots();drawLegend();syncTarget(id);
 }
