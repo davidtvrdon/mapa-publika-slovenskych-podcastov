@@ -142,6 +142,7 @@
     <div class="stat"><b>6</b><span>typov publika</span></div>
   </header>
 
+  <main>
   <div class="toolbar">
     <div class="field"><label for="search">Hľadať podcast</label><input type="text" id="search" placeholder="napr. Newsfilter, Vizita…" autocomplete="off"></div>
     <div class="field"><label for="pub">Vydavateľ</label><select id="pub"></select></div>
@@ -155,13 +156,14 @@
         <h2>Mapa segmentov</h2>
         <span class="hint">Kliknite alebo stlačte Enter pre detail · na farebný štítok pre segment</span>
       </div>
-      <svg class="scatter" id="svg" viewBox="0 0 720 560" role="img" aria-label="Bodový graf publika"></svg>
+      <svg class="scatter" id="svg" viewBox="0 0 720 560" aria-label="Bodový graf publika slovenských podcastov"></svg>
       <div class="sizeleg" id="sizeleg"></div>
       <div class="legend" id="legend"></div>
     </div>
     <div class="panel"><div class="detail" id="detail" aria-live="polite" aria-atomic="false"></div></div>
   </div>
 
+  </main>
   <footer>
     <b>Metodika.</b> Klastre boli nájdené automaticky (k-means) na základe podielu žien a podielu publika do 35 rokov; optimálny počet (6) bol zvolený podľa silhouette skóre. Os X = podiel žien spomedzi mužov a žien, os Y = podiel poslucháčov do 35 rokov. Priemerný vek je odhad z midpointov vekových pásiem. <b>Veľkosť bodu</b> zodpovedá celkovému počtu prehratí (audio + video + vlastný hosting), škálovaná podľa plochy (odmocninou). Počty prehratí sa podarilo priradiť k 99 zo 107 podcastov; 8 podcastov bez zhody v dátach o prehratiach je vykreslených prerušovaným okrajom (prehratia neznáme). Najpočúvanejší podcast celkovo (Ťažký týždeň, 1,7 mil.) nemá demografické dáta, preto nie je na mape; najväčší zobrazený bod je Dobré ráno. <b>Pozor:</b> demografia popisuje zloženie publika, nie jeho veľkosť; prehratia dopĺňajú rozmer dosahu. Podcasty bez demografie (Ťažký týždeň, Veľké správy, EKG &amp; Milan Lieskovský) boli vynechané; body s malou alebo neúplnou vzorkou nesú značku ◌.
   </footer>
