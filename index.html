@@ -388,7 +388,7 @@ function trendChart(podcastName, clusterColor){
   const td = TREND[podcastName];
   if(!td) return '<div class="sech">Trend prehratí</div><div class="cmp" style="margin-top:4px">Dáta o trende nie sú k dispozícii.</div>';
   const audio = td.a, yt = td.y;
-  const W=290, H=100, PL=34, PR=8, PT=8, PB=32;
+  const W=290, H=106, PL=34, PR=8, PT=8, PB=38;
   const cw = (W-PL-PR), ch = H-PT-PB;
   const n = MONTHS.length;
   const bw = cw/n, gap = bw*0.18, bw2 = bw - gap*2;
@@ -414,9 +414,9 @@ function trendChart(podcastName, clusterColor){
     const ytH = (y/tickMax)*ch;
     if(audioH>0) svg+=`<rect class="trend-bar-audio" x="${x.toFixed(1)}" y="${(baseY-audioH).toFixed(1)}" width="${bw2.toFixed(1)}" height="${audioH.toFixed(1)}"/>`;
     if(ytH>0)    svg+=`<rect class="trend-bar-yt"    x="${x.toFixed(1)}" y="${(baseY-audioH-ytH).toFixed(1)}" width="${bw2.toFixed(1)}" height="${ytH.toFixed(1)}"/>`;
-    // rotated label
+    // vertical label
     const lx = (x+bw2/2).toFixed(1), ly = (baseY+4).toFixed(1);
-    svg+=`<text class="trend-xlabel" x="${lx}" y="${ly}" transform="rotate(-40 ${lx} ${ly})">${m}</text>`;
+    svg+=`<text class="trend-xlabel" x="${lx}" y="${ly}" transform="rotate(-90 ${lx} ${ly})">${m}</text>`;
     // invisible hover target + data attrs
     const tipAudio = a>0?`Audio: ${fmtFull(a)}`:'';
     const tipYt = y>0?`YouTube: ${fmtFull(y)}`:'';
