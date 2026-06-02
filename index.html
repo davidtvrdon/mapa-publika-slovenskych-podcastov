@@ -11,7 +11,7 @@
     --paper:#F4F1E9; --paper2:#FBF9F3; --ink:#17160F; --muted:#6E6A60;
     --line:rgba(23,22,15,.12); --line2:rgba(23,22,15,.06);
     --card:#FFFFFF; --accent:#C4311F; --shadow:0 1px 2px rgba(23,22,15,.05),0 8px 28px -12px rgba(23,22,15,.18);
-    --c0:#1971C2; --c1:#E64980; --c2:#0CA678; --c3:#7048E8; --c4:#F59F00; --c5:#495057;
+    --c0:#1971C2; --c1:#C73870; --c2:#0CA678; --c3:#7048E8; --c4:#F59F00; --c5:#495057;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -136,10 +136,18 @@
   .source-note a:hover{text-decoration:underline}
   .copylink{margin-top:14px;display:inline-block;padding:7px 14px;background:none;border:1.5px solid var(--line);border-radius:8px;font-size:12px;font-family:inherit;color:var(--muted);cursor:pointer;transition:.14s}
   .copylink:hover{border-color:var(--accent);color:var(--accent)}
+  .skip-links{position:absolute;top:0;left:0;z-index:200}
+  .skip-links a{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;background:var(--ink);color:var(--paper);padding:10px 18px;border-radius:0 0 8px 0;font-size:13px;font-weight:600;text-decoration:none;white-space:nowrap}
+  .skip-links a:focus{position:static;width:auto;height:auto;overflow:visible}
   @media(max-width:920px){.grid{grid-template-columns:1fr}.stat{display:none}}
 </style>
 </head>
 <body>
+<nav class="skip-links" aria-label="Rýchla navigácia">
+  <a href="#search">Preskočiť na filtre</a>
+  <a href="#svg">Preskočiť na mapu</a>
+  <a href="#detail">Preskočiť na detail podcastu</a>
+</nav>
 <div class="wrap">
   <header class="top">
     <div>
