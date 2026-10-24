@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   sync:
@@ -20,3 +21,11 @@ jobs:
           ref: main
           fetch-depth: 0
       - run: tools/sync_main.sh
+      - name: Email - failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create --assignee davidtvrdon \
+            --title "Podcast map: syncing main FAILED" \
+            --body "The data is merged on the Pages branch but main was not synced, or the live site did not update. Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
