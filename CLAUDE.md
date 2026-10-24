@@ -25,7 +25,27 @@ Carry data updates through all three steps without stopping to ask. An open pull
 request is not a delivered update. Repointing Pages at `main` in Settings → Pages would
 collapse this to a single merge, but that is a manual settings change.
 
-## Updating the data
+## Automatic monthly update
+
+`.github/workflows/monthly-data-update.yml` runs Mon + Thu (and on demand from the
+Actions tab). `tools/auto_update.py` reads https://www.iabslovakia.sk/category/data/,
+downloads the newest report xlsx, registers the new sheets in `ALL_SHEETS`, runs
+`build_data.py` and rewrites the footer, methodology and README prose (steps 1–4 below),
+then opens a PR against the Pages branch.
+
+- **Clean** rebuild (same podcast list, no new fuzzy matches, stitched series or excluded
+  podcasts, at most 3 newly missing play counts versus `tools/report_baseline.json`):
+  the PR is merged automatically, `tools/sync_main.sh` waits for the deploy to go live and
+  then merges the Pages branch into `main`.
+- **Anything else**: the PR stays open with the report in its description. Review the
+  matches (step 3), merge it, and `.github/workflows/sync-main.yml` does the `main` sync.
+- Not automated: refreshing `seed` centroids (step 5) and any change in the report layout;
+  the script fails loudly rather than guessing, and the failed run emails the repo owner.
+- Needs the repo setting Settings → Actions → General → "Allow GitHub Actions to create
+  and approve pull requests". Scheduled workflows run only from `main`, so keep the
+  workflow files on both branches.
+
+## Updating the data by hand
 
 The IAB Slovakia monthly report arrives as an xlsx with one sheet per month plus a
 `Demografia_<year>` sheet. To roll the site forward:

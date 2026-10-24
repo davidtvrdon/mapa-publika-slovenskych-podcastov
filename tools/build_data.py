@@ -12,6 +12,7 @@ import openpyxl, json, re, unicodedata, difflib, sys, os
 XLSX = next((a for a in sys.argv[1:] if a.endswith('.xlsx')), None)
 HTML = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'index.html')
 DRY = '--dry' in sys.argv
+REPORT_JSON = sys.argv[sys.argv.index('--report-json') + 1] if '--report-json' in sys.argv else None
 if not XLSX:
     sys.exit('usage: python3 tools/build_data.py <Podcasty_report_<month>.xlsx> [--dry]')
 
@@ -42,6 +43,8 @@ SEGMENTS = [
 ]
 
 wb = openpyxl.load_workbook(XLSX, read_only=True, data_only=True)
+# one demographics sheet per year; the newest year is the current one
+DEMO_SHEET = max(n for n in wb.sheetnames if n.startswith('Demografia_'))
 
 
 def key(s):
@@ -86,7 +89,7 @@ def month_rows(sheet):
 
 # ---------------------------------------------------------------- podcasts (demografia)
 podcasts, excluded = [], []
-for r in wb['Demografia_2026'].iter_rows(min_row=3, values_only=True):
+for r in wb[DEMO_SHEET].iter_rows(min_row=3, values_only=True):
     if not r[2]:
         continue
     name = str(r[2]).strip()
@@ -292,3 +295,13 @@ print('total plays (mapped):', sum(known))
 for c in clusters:
     print(f"  {c['id']} {c['name']:24s} n={c['n']:3d} wf={c['wf']:3d} u35={c['u35']:3d} "
           f"age={c['meanage']} plays={c['plays_total']:>9d} known={c['plays_known']}")
+
+if REPORT_JSON:
+    # machine-readable twin of the report above, used by tools/auto_update.py
+    json.dump(dict(
+        total=len(podcasts), excluded=excluded, plays=len(known),
+        no_plays=[p['name'] for p in podcasts if p['plays'] is None],
+        fuzzy=[list(t) for t in fuzzy_plays],
+        stitched=[[a, b] for a, b in merges],
+        biggest=DATA['biggest'], months=months,
+    ), open(REPORT_JSON, 'w'), ensure_ascii=False, indent=1)

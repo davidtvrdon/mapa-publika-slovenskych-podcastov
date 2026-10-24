@@ -1,0 +1,126 @@
+{
+ "total": 107,
+ "excluded": [
+  "Ťažký týždeň",
+  "Veľké správy",
+  "EKG & Milan Lieskovský"
+ ],
+ "plays": 93,
+ "no_plays": [
+  "Ráno Nahlas",
+  "Terapia slovom",
+  "Rozprávky",
+  "DisinfoReport",
+  "Mikloš a Roháč",
+  "adam a madam",
+  "Rýchly a Zbesilá",
+  "Zadná Lavica",
+  "Hľadá sa človečina",
+  "Baristi v kufri",
+  "Cesty k sebe",
+  "Slovo Plus 7 Dní",
+  "Príbehy lásky",
+  "Útoky zvierat"
+ ],
+ "fuzzy": [
+  [
+   "ZKH",
+   "Rozhovory ZKH"
+  ],
+  [
+   "Zoom",
+   "ZOOM"
+  ],
+  [
+   "Aréna",
+   "Aréna s Janou Krescanko Dibákovou"
+  ],
+  [
+   "Karieris",
+   "Kariéééris"
+  ],
+  [
+   "Dopodrobna",
+   "Dopodrobna s Ivom Funtekom"
+  ],
+  [
+   "Diskusný klub",
+   "Diskusný klub so Šimonom Žďárskym"
+  ],
+  [
+   "PSYCHO-TALKY",
+   "PSYCHO-TALKY so Šlacim"
+  ]
+ ],
+ "stitched": [
+  [
+   "ZKH",
+   [
+    "Rozhovory ZKH"
+   ]
+  ],
+  [
+   "Zoom",
+   [
+    "Zoom",
+    "ZOOM"
+   ]
+  ],
+  [
+   "Aréna",
+   [
+    "Aréna s Janou Krescanko Dibákovou"
+   ]
+  ],
+  [
+   "DisinfoReport",
+   [
+    "Disinfo report"
+   ]
+  ],
+  [
+   "Karieris",
+   [
+    "kariéris",
+    "Kariéééris",
+    "Karieeeeeris"
+   ]
+  ],
+  [
+   "Dopodrobna",
+   [
+    "Dopodrobna",
+    "Dopodrobna s Ivom Funtekom"
+   ]
+  ],
+  [
+   "Diskusný klub",
+   [
+    "Diskusný klub",
+    "Diskusný klub so Šimonom Žďárskym"
+   ]
+  ],
+  [
+   "PSYCHO-TALKY",
+   [
+    "PSYCHO-TALKY",
+    "PSYCHO-TALKY so Šlacim"
+   ]
+  ]
+ ],
+ "biggest": "Dobré ráno",
+ "months": [
+  "Okt 25",
+  "Nov 25",
+  "Dec 25",
+  "Jan 26",
+  "Feb 26",
+  "Mar 26",
+  "Apr 26",
+  "Máj 26",
+  "Jún 26",
+  "Júl 26",
+  "Aug 26",
+  "Sep 26"
+ ]
+}
