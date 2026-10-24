@@ -2,7 +2,7 @@
 
 Interaktívna vizualizácia demografického zloženia publika 107 slovenských podcastov od vydavateľov Petit Press, N Press, Ringier Slovakia Media, BAUER MEDIA Slovakia, News and Media a ZAPO.
 
-Zdroj dát: IAB Slovakia: [Monitoring počúvanosti podcastov (07/2026)](https://www.iabslovakia.sk/julove-vysledky-pocuvanosti-podcastov-na-slovensku-2/)
+Zdroj dát: IAB Slovakia: [Monitoring počúvanosti podcastov (09/2026)](https://www.iabslovakia.sk/) · aktualizované 24. 10. 2026
 
 ## Čo ukazuje mapa
 
@@ -10,7 +10,7 @@ Každý bod predstavuje jeden podcast umiestnený podľa dvoch osí:
 
 - **Os X** – podiel žien v publiku (vľavo = prevažne muži, vpravo = prevažne ženy)
 - **Os Y** – podiel poslucháčov do 35 rokov (nižšie = staršie publikum, vyššie = mladšie)
-- **Veľkosť bodu** – celkový počet prehratí za júl 2026 (audio + video + vlastný hosting)
+- **Veľkosť bodu** – celkový počet prehratí za september 2026 (audio + video + vlastný hosting)
 - **Farba** – automaticky nájdený typ publika (k-means klastrovanie)
 
 ## Segmenty publika
@@ -31,7 +31,7 @@ Každý bod predstavuje jeden podcast umiestnený podľa dvoch osí:
 - Fulltextové vyhľadávanie podcastov
 - Detail každého podcastu s vekovým a rodovým rozložením
 - Porovnanie s priemerom segmentu
-- Trend prehratí za posledných 12 mesiacov (august 2025 – júl 2026)
+- Trend prehratí za posledných 12 mesiacov (október 2025 – september 2026)
 
 ## Metodika
 
@@ -39,4 +39,4 @@ Klastre boli nájdené automaticky (k-means) na základe podielu žien a podielu
 
 ## Zdroj dát
 
-Demografické dáta pochádzajú z meraní vydavateľov; počty prehratí pokrývajú audio, video aj vlastný hosting. Veľkosť bodov vychádza z prehratí za júl 2026, ktoré sa podarilo priradiť k 96 zo 107 podcastov – zvyšných 11 je vykreslených prerušovaným okrajom. Trend v detaile podcastu pokrýva posledných 12 mesiacov, teda august 2025 – júl 2026.
+Demografické dáta pochádzajú z meraní vydavateľov; počty prehratí pokrývajú audio, video aj vlastný hosting. Veľkosť bodov vychádza z prehratí za september 2026, ktoré sa podarilo priradiť k 93 zo 107 podcastov – zvyšných 14 je vykreslených prerušovaným okrajom. Trend v detaile podcastu pokrýva posledných 12 mesiacov, teda október 2025 – september 2026.
