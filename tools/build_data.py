@@ -22,6 +22,7 @@ ALL_SHEETS = [
     ('November 2025', 'Nov 25'), ('December 2025', 'Dec 25'), ('Január_2026', 'Jan 26'),
     ('Februar_2026', 'Feb 26'), ('Marec _2026', 'Mar 26'), ('April_2026', 'Apr 26'),
     ('Máj_2026', 'Máj 26'), ('Jún_2026', 'Jún 26'), ('Júl_2026', 'Júl 26'),
+    ('August_2026', 'Aug 26'), ('September 2026', 'Sep 26'),
 ]
 WINDOW = ALL_SHEETS[-12:]
 LATEST = ALL_SHEETS[-1][0]
