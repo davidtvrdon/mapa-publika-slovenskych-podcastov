@@ -2,7 +2,7 @@
 
 Interaktívna vizualizácia demografického zloženia publika 107 slovenských podcastov od vydavateľov Petit Press, N Press, Ringier Slovakia Media, BAUER MEDIA Slovakia, News and Media a ZAPO.
 
-Zdroj dát: IAB Slovakia: [Monitoring počúvanosti podcastov (09/2026)](https://www.iabslovakia.sk/) · aktualizované 24. 10. 2026
+Zdroj dát: IAB Slovakia: [Monitoring počúvanosti podcastov (09/2026)](https://www.iabslovakia.sk/septembrove-vysledky-pocuvanosti-podcastov-na-slovensku-2/) · aktualizované 24. 10. 2026
 
 ## Čo ukazuje mapa
 
