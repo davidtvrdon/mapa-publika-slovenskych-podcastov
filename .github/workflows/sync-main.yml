@@ -1,0 +1,22 @@
+name: Publish and sync main
+
+# After a data PR lands on the Pages branch (auto-merged or by hand): confirm the
+# deploy went live, then merge the same change into `main` so it does not drift.
+on:
+  pull_request:
+    types: [closed]
+    branches: [claude/gallant-gates-UKccu]
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'data/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - run: tools/sync_main.sh
