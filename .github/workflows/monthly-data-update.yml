@@ -1,0 +1,52 @@
+name: Monthly data update
+
+# Scheduled workflows only run from the default branch, so this file must exist on
+# `main`; it works on the Pages branch (see CLAUDE.md) and opens its PR against it.
+on:
+  schedule:
+    - cron: '17 6 * * 1,4'   # Mon + Thu, 06:17 UTC; a no-op until IAB posts a new month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  PAGES_BRANCH: claude/gallant-gates-UKccu
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.PAGES_BRANCH }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install openpyxl
+      - id: upd
+        run: python3 tools/auto_update.py
+      - name: Open PR
+        if: steps.upd.outputs.status == 'updated'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "${{ steps.upd.outputs.branch }}"
+          git add -A
+          git commit -m "Update podcast data to ${{ steps.upd.outputs.label }}"
+          git push -f origin "${{ steps.upd.outputs.branch }}"
+          gh pr create --base "$PAGES_BRANCH" --head "${{ steps.upd.outputs.branch }}" \
+            --title "Update podcast data to ${{ steps.upd.outputs.label }}" \
+            --body-file tools/.pr_body.md
+      - name: Auto-merge when nothing needs review
+        if: steps.upd.outputs.status == 'updated' && steps.upd.outputs.clean == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh pr merge "${{ steps.upd.outputs.branch }}" --merge
+      # merges made with GITHUB_TOKEN do not trigger sync-main.yml, so sync here
+      - name: Publish and sync main
+        if: steps.upd.outputs.status == 'updated' && steps.upd.outputs.clean == 'true'
+        run: tools/sync_main.sh
