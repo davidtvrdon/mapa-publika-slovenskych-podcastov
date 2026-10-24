@@ -40,7 +40,9 @@ then opens a PR against the Pages branch.
 - **Anything else**: the PR stays open with the report in its description. Review the
   matches (step 3), merge it, and `.github/workflows/sync-main.yml` does the `main` sync.
 - Not automated: refreshing `seed` centroids (step 5) and any change in the report layout;
-  the script fails loudly rather than guessing, and the failed run emails the repo owner.
+  the script fails loudly rather than guessing. Every outcome (published, needs review,
+  failed) opens an issue assigned to the owner, which GitHub emails; the workflows need
+  `issues: write`.
 - Needs the repo setting Settings → Actions → General → "Allow GitHub Actions to create
   and approve pull requests". Scheduled workflows run only from `main`, so keep the
   workflow files on both branches.

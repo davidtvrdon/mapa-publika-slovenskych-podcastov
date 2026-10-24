@@ -10,9 +10,11 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  issues: write
 
 env:
   PAGES_BRANCH: claude/gallant-gates-UKccu
+  OWNER: davidtvrdon
 
 jobs:
   update:
@@ -40,7 +42,7 @@ jobs:
           git push -f origin "${{ steps.upd.outputs.branch }}"
           gh pr create --base "$PAGES_BRANCH" --head "${{ steps.upd.outputs.branch }}" \
             --title "Update podcast data to ${{ steps.upd.outputs.label }}" \
-            --body-file tools/.pr_body.md
+            --body-file tools/.pr_body.md --assignee "$OWNER"
       - name: Auto-merge when nothing needs review
         if: steps.upd.outputs.status == 'updated' && steps.upd.outputs.clean == 'true'
         env:
@@ -50,3 +52,30 @@ jobs:
       - name: Publish and sync main
         if: steps.upd.outputs.status == 'updated' && steps.upd.outputs.clean == 'true'
         run: tools/sync_main.sh
+
+      # Email: GitHub mails the assignee of an issue. These three cover every outcome.
+      - name: Email - needs review
+        if: steps.upd.outputs.status == 'updated' && steps.upd.outputs.clean == 'false'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create --assignee "$OWNER" \
+            --title "Podcast map: ${{ steps.upd.outputs.label }} needs your review" \
+            --body "The automatic update found something to check, so it was NOT published. Review the matches in the PR and merge it: $(gh pr view '${{ steps.upd.outputs.branch }}' --json url -q .url)"
+      - name: Email - published
+        if: steps.upd.outputs.status == 'updated' && steps.upd.outputs.clean == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          url=$(gh issue create --assignee "$OWNER" \
+            --title "Podcast map: ${{ steps.upd.outputs.label }} published" \
+            --body "Updated automatically, nothing needed review. https://davidtvrdon.github.io/mapa-publika-slovenskych-podcastov/")
+          gh issue close "$url"
+      - name: Email - failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue create --assignee "$OWNER" \
+            --title "Podcast map: automatic update FAILED" \
+            --body "The update did not complete and nothing new was published. Run: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
